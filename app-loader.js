@@ -1,8 +1,9 @@
 (async () => {
-  const parts = await Promise.all([
-    fetch("part1.js").then((r) => r.text()),
-    fetch("part2.js").then((r) => r.text()),
-  ]);
+  const files = ["c1.js", "c2.js", "c3.js", "c4.js", "c5.js"];
+  const parts = await Promise.all(files.map((f) => fetch(f).then((r) => {
+    if (!r.ok) throw new Error("Missing " + f);
+    return r.text();
+  })));
   const script = document.createElement("script");
   script.textContent = parts.join("");
   document.body.appendChild(script);
